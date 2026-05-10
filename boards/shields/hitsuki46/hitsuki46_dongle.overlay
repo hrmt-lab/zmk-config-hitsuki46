@@ -62,6 +62,11 @@
     };
 };
 
+// Keep the auto mouse layer active only while pressing J/K/L.
+&zip_temp_layer {
+    excluded-positions = <19 20 21>;
+};
+
 // Right trackball input forwarded from the R peripheral.
 &trackball_right_listener {
     status = "okay";
