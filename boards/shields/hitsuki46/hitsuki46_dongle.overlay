@@ -1,0 +1,130 @@
+#include "hitsuki46.dtsi"
+#include <dt-bindings/zmk/input_transform.h>
+#include <dt-bindings/input/input-event-codes.h>
+#include <input/processors.dtsi>
+#include <dt-bindings/zmk/pointing.h>
+
+//=============================================================================
+// Trackball Mode Configuration on the Prospector central dongle
+// 0 = CURSOR mode (mouse cursor movement)
+// 1 = SCROLL mode (scroll operation)
+//=============================================================================
+#define LEFT_TRACKBALL_MODE  1
+#define RIGHT_TRACKBALL_MODE 0
+//=============================================================================
+
+/ {
+    chosen {
+        zmk,kscan = &mock_kscan;
+        /delete-property/ zmk,battery;
+        /delete-property/ zmk,ws2812-widget;
+    };
+
+    mock_kscan: mock_kscan_0 {
+        compatible = "zmk,kscan-mock";
+        columns = <0>;
+        rows = <0>;
+        events = <0>;
+    };
+
+    xy_clipper: xy_clipper {
+        compatible = "zmk,input-processor-xy-clipper";
+        #input-processor-cells = <0>;
+        threshold = <20>;
+        invert-x = <0>;
+        invert-y = <0>;
+    };
+
+    // Left trackball input forwarded from the L peripheral.
+    trackball_left_listener: trackball_left_listener {
+        compatible = "zmk,input-listener";
+        status = "okay";
+        device = <&trackball_left_split>;
+
+#if LEFT_TRACKBALL_MODE == 1
+        input-processors =
+            <&xy_clipper>,
+            <&zip_xy_to_scroll_mapper>,
+            <&zip_scroll_scaler 2 5>;
+#else
+        input-processors =
+            <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
+            <&zip_temp_layer 3 700>;
+
+        scroller {
+            layers = <5>;
+            input-processors =
+                <&xy_clipper>,
+                <&zip_xy_to_scroll_mapper>,
+                <&zip_scroll_scaler 2 5>;
+        };
+#endif
+    };
+};
+
+// Right trackball input forwarded from the R peripheral.
+&trackball_right_listener {
+    status = "okay";
+    device = <&trackball_right_split>;
+
+#if RIGHT_TRACKBALL_MODE == 1
+    input-processors =
+        <&xy_clipper>,
+        <&zip_xy_to_scroll_mapper>,
+        <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
+        <&zip_scroll_scaler 2 5>;
+#else
+    input-processors = <&zip_temp_layer 3 700>;
+
+    scroller {
+        layers = <5>;
+        input-processors =
+            <&xy_clipper>,
+            <&zip_xy_to_scroll_mapper>,
+            <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
+            <&zip_scroll_scaler 2 5>;
+    };
+#endif
+};
+
+
+
+&kscan0 {
+    compatible = "zmk,kscan-mock";
+    columns = <0>;
+    rows = <0>;
+    events = <0>;
+    /delete-property/ row-gpios;
+    /delete-property/ diode-direction;
+    /delete-property/ wakeup-source;
+};
+
+&pinctrl {
+    spi1_default: spi1_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+                <NRF_PSEL(SPIM_MOSI, 0, 19)>,
+                <NRF_PSEL(SPIM_MISO, 0, 19)>;
+        };
+    };
+
+    spi1_sleep: spi1_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+                <NRF_PSEL(SPIM_MOSI, 0, 19)>,
+                <NRF_PSEL(SPIM_MISO, 0, 19)>;
+            low-power-enable;
+        };
+    };
+};
+
+// Receive split input streams on the central.
+&trackball_left_split {};
+&trackball_right_split {};
+
+// The dongle does not have hitsuki46 hand-local battery/LED hardware.
+&non_lipo_battery { status = "disabled"; };
+&led_power { status = "disabled"; };
+&led_strip { status = "disabled"; };
+&spi1 { status = "disabled"; };
+&adc { status = "disabled"; };

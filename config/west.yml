@@ -11,6 +11,8 @@ manifest:
       url-base: https://github.com/badjeff
     - name: iwk7273
       url-base: https://github.com/iwk7273
+    - name: hrmt-lab
+      url-base: https://github.com/hrmt-lab
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -28,5 +30,8 @@ manifest:
     - name: zmk-feature-xy_clipper
       remote: iwk7273
       revision: main
+    - name: prospector-zmk-module
+      remote: hrmt-lab
+      revision: feat/new-status-screens
   self:
     path: config

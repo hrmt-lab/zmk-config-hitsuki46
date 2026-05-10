@@ -1,3 +1,6 @@
+config SHIELD_HITSUKI46_DONGLE
+    def_bool $(shields_list_contains,hitsuki46_dongle)
+
 config SHIELD_HITSUKI46_R
     def_bool $(shields_list_contains,hitsuki46_R)
 

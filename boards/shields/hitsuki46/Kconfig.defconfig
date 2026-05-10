@@ -1,12 +1,22 @@
+if SHIELD_HITSUKI46_DONGLE
+
+config ZMK_KEYBOARD_NAME
+    default "hitsuki46"
+
+config ZMK_SPLIT
+    default y
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+
+endif
+
 if SHIELD_HITSUKI46_R
 
 config ZMK_KEYBOARD_NAME
     default "hitsuki46_R"
 
 config ZMK_SPLIT
-    default y
-
-config ZMK_SPLIT_ROLE_CENTRAL
     default y
 
 endif

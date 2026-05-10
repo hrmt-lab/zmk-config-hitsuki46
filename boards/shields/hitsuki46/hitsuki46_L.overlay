@@ -2,6 +2,9 @@
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors.dtsi>
 
+// This peripheral only owns the left trackball split stream.
+&trackball_right_split { status = "disabled"; };
+
 // Configure trackball_left_split to forward data from trackball_left to central
 &trackball_left_split {
     device = <&trackball_left>;
