@@ -3,7 +3,7 @@
 ---
 include:
  - board: xiao_ble/nrf52840/zmk
-   shield: hitsuki46_dongle prospector_adapter
+   shield: hitsuki46_dongle prospector_adapter raw_hid_adapter
    snippet: studio-rpc-usb-uart
    artifact-name: hitsuki46_dongle
  - board: xiao_ble/nrf52840/zmk

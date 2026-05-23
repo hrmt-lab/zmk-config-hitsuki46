@@ -30,8 +30,11 @@ manifest:
     - name: zmk-feature-xy_clipper
       remote: iwk7273
       revision: main
-    - name: prospector-zmk-module
+    - name: prospector-zmk-module-ring
       remote: hrmt-lab
-      revision: feat/new-status-screens
+      revision: main
+    - name: zmk-raw-hid
+      remote: hrmt-lab
+      revision: custom/raw-hid-custom
   self:
     path: config

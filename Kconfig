@@ -1,0 +1,22 @@
+config HITSUKI46_RAW_HID
+    bool
+    depends on SHIELD_HITSUKI46_DONGLE
+    depends on RAW_HID
+
+config HITSUKI46_RAW_HID_LAYER_CONTROL
+    bool "Enable hitsuki46 Raw HID layer control"
+    depends on SHIELD_HITSUKI46_DONGLE
+    depends on RAW_HID
+    select HITSUKI46_RAW_HID
+    help
+      Enable the hitsuki46-specific Raw HID packet handler that lets a host
+      application activate and clear one ZMK layer.
+
+config HITSUKI46_RAW_HID_TIME_SYNC
+    bool "Enable hitsuki46 Raw HID time sync"
+    depends on SHIELD_HITSUKI46_DONGLE
+    depends on RAW_HID
+    select HITSUKI46_RAW_HID
+    help
+      Enable the hitsuki46-specific Raw HID packet handler that receives host
+      time sync packets and exposes formatted local time for the display.
