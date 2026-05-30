@@ -145,9 +145,12 @@ Bluetooth設定レイヤー
 - **レイヤー制御**: ホストから ZMK レイヤーを有効化/解除
 - **時刻同期**: ホストの現在時刻を受信して保持
 
-USB / BLE 両方の接続に対応します（[zmk-raw-hid](https://github.com/hrmt-lab/zmk-raw-hid) を使用）。
+USB / BLE 両方の接続に対応します。トランスポートに [zmk-raw-hid](https://github.com/hrmt-lab/zmk-raw-hid)、
+プロトコル解析に [zmk-rawhid-app](https://github.com/hrmt-lab/zmk-rawhid-app)（汎用モジュール）を使用し、
+hitsuki46 側はこれらを有効化するだけで動作します（キーボード固有の RawHID コードは持ちません）。
 
-> パケット仕様・各 CONFIG・実装構造（他キーボードへの移植ガイド含む）は **[docs/raw-hid.md](docs/raw-hid.md)** を参照してください。
+> hitsuki46 での設定（有効化する CONFIG・F21 割当）は **[docs/raw-hid.md](docs/raw-hid.md)**、
+> プロトコル仕様・実装構造・他キーボードへの移植ガイドは **[zmk-rawhid-app の README](https://github.com/hrmt-lab/zmk-rawhid-app)** を参照してください。
 
 ## ファームウェアビルド
 
@@ -162,7 +165,8 @@ USB / BLE 両方の接続に対応します（[zmk-raw-hid](https://github.com/h
 - [zmk-feature-non-lipo-battery-management](https://github.com/sekigon-gonnoc/zmk-feature-non-lipo-battery-management) - 非LiPoバッテリー管理
 - [zmk-feature-xy_clipper](https://github.com/iwk7273/zmk-feature-xy_clipper) - 斜め入力防止フィルター
 - [prospector-zmk-module-ring](https://github.com/hrmt-lab/prospector-zmk-module-ring) - Prospector ディスプレイ（RING レイアウト / AI Usage 画面）
-- [zmk-raw-hid](https://github.com/hrmt-lab/zmk-raw-hid) - RawHID ホスト連携
+- [zmk-raw-hid](https://github.com/hrmt-lab/zmk-raw-hid) - RawHID トランスポート
+- [zmk-rawhid-app](https://github.com/hrmt-lab/zmk-rawhid-app) - RawHID アプリ層プロトコル（レイヤー制御 / 時刻同期 / AI 使用率）
 
 ## キーマップ
 
