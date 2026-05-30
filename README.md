@@ -14,6 +14,7 @@ hitsuki46は46キーの分割キーボードで、両手にトラックボール
 - **Bluetooth接続性能向上** (+8dBm出力)
 - **WS2812 LEDステータス表示**
 - **ZMK Studio対応**
+- **RawHID ホスト連携** (Prospector ディスプレイへの AI 使用率表示・レイヤー制御・時刻同期)
 - **Zephyr 4.1対応**
 
 ## トラックボール設定
@@ -136,6 +137,18 @@ Bluetooth設定レイヤー
 - MAX: 1400mV (100%) → ADC: 448mV
 - スリープタイムアウト: 15分
 
+## RawHID ホスト連携
+
+ドングル（セントラル）がホスト PC と **RawHID** で双方向通信し、Prospector ディスプレイ上で以下に対応します。
+
+- **AI 使用率表示**: ホストから受信した Claude Code / Codex の 5h・7d 使用率を Prospector の AI Usage 画面に表示
+- **レイヤー制御**: ホストから ZMK レイヤーを有効化/解除
+- **時刻同期**: ホストの現在時刻を受信して保持
+
+USB / BLE 両方の接続に対応します（[zmk-raw-hid](https://github.com/hrmt-lab/zmk-raw-hid) を使用）。
+
+> パケット仕様・各 CONFIG・実装構造（他キーボードへの移植ガイド含む）は **[docs/raw-hid.md](docs/raw-hid.md)** を参照してください。
+
 ## ファームウェアビルド
 
 このリポジトリはGitHub Actionsで自動ビルドされます。
@@ -148,6 +161,8 @@ Bluetooth設定レイヤー
 - [zmk-ws2812-driver](https://github.com/gohanda11/zmk-ws2812-driver) - LEDドライバー
 - [zmk-feature-non-lipo-battery-management](https://github.com/sekigon-gonnoc/zmk-feature-non-lipo-battery-management) - 非LiPoバッテリー管理
 - [zmk-feature-xy_clipper](https://github.com/iwk7273/zmk-feature-xy_clipper) - 斜め入力防止フィルター
+- [prospector-zmk-module-ring](https://github.com/hrmt-lab/prospector-zmk-module-ring) - Prospector ディスプレイ（RING レイアウト / AI Usage 画面）
+- [zmk-raw-hid](https://github.com/hrmt-lab/zmk-raw-hid) - RawHID ホスト連携
 
 ## キーマップ
 

@@ -58,11 +58,15 @@ static void set_host_layer(zmk_keymap_layer_id_t layer) {
 }
 
 void hitsuki46_raw_hid_layer_control_handle(const struct hitsuki46_raw_hid_packet *packet) {
-    switch (packet->type) {
-    case HITSUKI46_RAW_HID_PACKET_SET_LAYER:
-        set_host_layer(packet->legacy.layer);
+    if (packet->type != HITSUKI46_RAW_HID_PACKET_APP_LAYER) {
+        return;
+    }
+
+    switch (packet->app_layer.action) {
+    case HITSUKI46_RAW_HID_APP_LAYER_SET:
+        set_host_layer(packet->app_layer.layer);
         break;
-    case HITSUKI46_RAW_HID_PACKET_CLEAR:
+    case HITSUKI46_RAW_HID_APP_LAYER_CLEAR:
         clear_host_layer();
         break;
     default:

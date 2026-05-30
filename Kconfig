@@ -20,3 +20,13 @@ config HITSUKI46_RAW_HID_TIME_SYNC
     help
       Enable the hitsuki46-specific Raw HID packet handler that receives host
       time sync packets and exposes formatted local time for the display.
+
+config HITSUKI46_RAW_HID_AI_USAGE
+    bool "Enable hitsuki46 Raw HID AI usage"
+    depends on SHIELD_HITSUKI46_DONGLE
+    depends on RAW_HID
+    select HITSUKI46_RAW_HID
+    help
+      Enable the hitsuki46-specific Raw HID packet handler that receives host
+      AI usage packets (Codex / Claude Code 5h and 7d usage) and exposes the
+      latest per-provider state for the display.
