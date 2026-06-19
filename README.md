@@ -136,6 +136,30 @@ Bluetooth設定レイヤー
 - MAX: 1400mV (100%) → ADC: 448mV
 - スリープタイムアウト: 15分
 
+## RawHID Host Link
+
+dongle firmware では `zmk-raw-hid` と `zmk-rawhid-app` を有効化しています。RawHID Host からは
+USB RawHID または BLE Host Link 経由で `HOST_HELLO` / `DEVICE_HELLO`、レイヤー制御、レイヤー状態、
+左右ペリフェラルのバッテリー残量などを扱えます。
+
+主な有効機能:
+
+- `APP_LAYER`: host からのレイヤー制御
+- `TIME_SYNC`: host 時刻同期
+- `AI_USAGE`: AI 使用率表示用データ
+- `LAYER_STATE`: firmware から host への現在レイヤー通知
+- `BATTERY_STATUS`: 左右ペリフェラルのバッテリー残量通知
+- `HOST_ACTION`: firmware から host 側 action を起動
+- `KEY_STATS`: キー位置ごとの打鍵数通知
+- `KEY_PRESS`: 押下/離上イベント通知
+
+`BATTERY_STATUS` は左右ペリフェラルが接続され、ZMK の `zmk_peripheral_battery_state_changed` が発火した後に
+実残量 `0..100` を送ります。左右ペリフェラルが未接続または電源OFFの場合、level は `0xFF`（unknown）になり、
+RawHID Host では `--%` や `?` と表示されます。
+
+BLE Host Link では `DEVICE_HELLO` 直後に `LAYER_STATE` / `BATTERY_STATUS` などの uplink が連続します。
+この構成では `zmk-raw-hid` 側で BLE notify をキュー化し、notify 完了まで report buffer を保持する実装を使います。
+
 ## ファームウェアビルド
 
 このリポジトリはGitHub Actionsで自動ビルドされます。
@@ -148,6 +172,8 @@ Bluetooth設定レイヤー
 - [zmk-ws2812-driver](https://github.com/gohanda11/zmk-ws2812-driver) - LEDドライバー
 - [zmk-feature-non-lipo-battery-management](https://github.com/sekigon-gonnoc/zmk-feature-non-lipo-battery-management) - 非LiPoバッテリー管理
 - [zmk-feature-xy_clipper](https://github.com/iwk7273/zmk-feature-xy_clipper) - 斜め入力防止フィルター
+- [zmk-raw-hid](https://github.com/hrmt-lab/zmk-raw-hid) - RawHID transport
+- [zmk-rawhid-app](https://github.com/hrmt-lab/zmk-rawhid-app) - RawHID アプリ層プロトコル
 
 ## キーマップ
 
