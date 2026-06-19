@@ -15,16 +15,13 @@
 
 / {
     chosen {
-        zmk,kscan = &mock_kscan;
+        zmk,kscan = &kscan0;
+        zmk,physical-layout = &hitsuki46_physical_layout;
+        /* The dongle has no local battery sensor (non_lipo_battery and adc are
+         * disabled below). Drop the zmk,battery chosen inherited from the dtsi so
+         * battery.c does not try to DEVICE_DT_GET a disabled device. Peripheral
+         * battery levels are still fetched/reported via the split central. */
         /delete-property/ zmk,battery;
-        /delete-property/ zmk,ws2812-widget;
-    };
-
-    mock_kscan: mock_kscan_0 {
-        compatible = "zmk,kscan-mock";
-        columns = <0>;
-        rows = <0>;
-        events = <0>;
     };
 
     xy_clipper: xy_clipper {
@@ -62,6 +59,10 @@
     };
 };
 
+&default_transform {
+    row-offset = <4>;
+};
+
 // Keep the auto mouse layer active only while pressing J/K/L.
 &zip_temp_layer {
     excluded-positions = <19 20 21>;
@@ -94,14 +95,25 @@
 
 
 
+/* Dongle local 3x6 matrix. diode-direction col2row (from hitsuki46.dtsi):
+ *   columns are driven (outputs), rows are read (inputs, pull-down).
+ * Extend the kscan0 node defined in hitsuki46.dtsi with the dongle's own pins.
+ * row-gpios is overridden to the dongle's 3 rows (dtsi default is 4 rows). */
 &kscan0 {
-    compatible = "zmk,kscan-mock";
-    columns = <0>;
-    rows = <0>;
-    events = <0>;
-    /delete-property/ row-gpios;
-    /delete-property/ diode-direction;
-    /delete-property/ wakeup-source;
+    col-gpios
+        = <&xiao_d  2 GPIO_ACTIVE_HIGH>   /* col0  D2    P0.28 */
+        , <&gpio0  15 GPIO_ACTIVE_HIGH>   /* col1  P0.15       */
+        , <&gpio0  19 GPIO_ACTIVE_HIGH>   /* col2  P0.19       */
+        , <&gpio1   1 GPIO_ACTIVE_HIGH>   /* col3  P1.01       */
+        , <&gpio0   9 GPIO_ACTIVE_HIGH>   /* col4  P0.09 (NFC1)*/
+        , <&gpio0  10 GPIO_ACTIVE_HIGH>   /* col5  P0.10 (NFC2)*/
+        ;
+
+    row-gpios
+        = <&gpio1   7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* row0  P1.07 */
+        , <&gpio1   5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* row1  P1.05 */
+        , <&gpio1   3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* row2  P1.03 */
+        ;
 };
 
 &pinctrl {
