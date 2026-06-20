@@ -160,6 +160,11 @@ RawHID Host では `--%` や `?` と表示されます。
 BLE Host Link では `DEVICE_HELLO` 直後に `LAYER_STATE` / `BATTERY_STATUS` などの uplink が連続します。
 この構成では `zmk-raw-hid` 側で BLE notify をキュー化し、notify 完了まで report buffer を保持する実装を使います。
 
+dongle firmware は ZMK Studio も有効です。`zmk-rawhid-app` が ZMK Studio の
+`get_device_info().serial_number` を Host Link の `device_uid_hash` と同じ UID（16桁の小文字 hex 文字列）で
+返すため、RawHID Host は Studio 接続デバイスと Host Link デバイスを同一個体として紐付けられます
+（詳細は [zmk-rawhid-app](https://github.com/hrmt-lab/zmk-rawhid-app) の README を参照）。
+
 ## ファームウェアビルド
 
 このリポジトリはGitHub Actionsで自動ビルドされます。
