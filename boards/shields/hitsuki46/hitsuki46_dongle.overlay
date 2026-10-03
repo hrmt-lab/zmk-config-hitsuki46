@@ -69,7 +69,7 @@
 
 // Keep the auto mouse layer active only while pressing J/K/L.
 &zip_temp_layer {
-    excluded-positions = <19 20 21>;
+    excluded-positions = <12 19 20 21>;
     require-prior-idle-ms = <200>;
 };
 
